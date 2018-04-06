@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package batch.fat;
+package fat.junit;
 
 import java.io.File;
 
@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 import com.ibm.websphere.simplicity.ShrinkHelper;
 import com.ibm.websphere.simplicity.log.Log;
 
-import app.web.MyServlet;
+import app.timeout.TranTimeoutCleanupServlet;
 import componenttest.annotation.MinimumJavaLevel;
 import componenttest.annotation.Server;
 import componenttest.annotation.TestServlet;
@@ -45,17 +45,17 @@ import componenttest.topology.utils.FATServletClient;
  */
 @RunWith(FATRunner.class)
 @MinimumJavaLevel(javaLevel = 1.7)
-public class SimpleBatchTest extends FATServletClient {
+public class TranTimeoutCleanupTest extends FATServletClient {
 
-    @Server("CDIBatch")
-    @TestServlet(servlet = MyServlet.class, path = "implicit/MyServlet")
+    @Server("TranTimeoutCleanup")
+    @TestServlet(servlet = TranTimeoutCleanupServlet.class, path = "implicit/TranTimeoutCleanupServlet")
     public static LibertyServer server1;
 
     @BeforeClass
     public static void setUp() throws Exception {
         WebArchive implicit = ShrinkWrap.create(WebArchive.class, "implicit.war")//
-                        .addPackages(true, "app");
-        addBatchJob(implicit, "cdi.xml");
+                        .addPackages(true, "app.timeout");
+        addBatchJob(implicit, ".xml");
 
         // Write the WebArchive to 'publish/servers/<server>/apps' and print the contents
         ShrinkHelper.exportAppToServer(server1, implicit);
@@ -68,7 +68,7 @@ public class SimpleBatchTest extends FATServletClient {
      * @param jslName Batch Job JSL name
      */
     private static void addBatchJob(WebArchive implicit, String jslName) {
-        Log.info(SimpleBatchTest.class, "addBatchJob", "Adding jslName = " + jslName);
+        Log.info(TranTimeoutCleanupTest.class, "addBatchJob", "Adding jslName = " + jslName);
         String resourceDir = "test-applications/implicit/resources/";
         String batchJobsDir = "classes/META-INF/batch-jobs/";
         implicit.addAsWebInfResource(new File(resourceDir + jslName), batchJobsDir + jslName);

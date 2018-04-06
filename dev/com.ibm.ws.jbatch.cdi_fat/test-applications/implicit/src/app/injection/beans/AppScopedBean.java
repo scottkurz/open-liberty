@@ -8,11 +8,13 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package app.beans;
+package app.injection.beans;
 
-/**
- * Adds some
- */
-public abstract class AbstractScopedBean extends AbstractBean {
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+
+@ApplicationScoped
+@Named("AppScopedBean")
+public class AppScopedBean extends AbstractScopedBean {
 
 }

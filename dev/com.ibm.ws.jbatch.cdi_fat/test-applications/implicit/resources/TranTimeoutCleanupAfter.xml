@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,14 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 -->
-<job id="cdi1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd" version="1.0">
-	<listeners> 
-		<listener ref="JobListener"/>
-	</listeners> 
-	<step id="step1">
-		<batchlet ref="Batchlet">
+<job id="TranTimeoutCleanupAfter" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd"
+	version="1.0">
+	<step id="step1"> 
+		<batchlet ref="TranTimeoutCleanupBatchlet">
 			<properties >
-				<property name="color" value="#{jobParameters['color']}?:blue;"/>
+				<!--  Must be longer than the timeout we're trying to provoke -->
+				<property name="sleepTimeSeconds" value="#{jobParameters['sleepTimeSeconds']}?:5;"/>
 			</properties>
 		</batchlet>
 	</step>

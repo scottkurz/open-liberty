@@ -1,10 +1,11 @@
-<server description="server">
+<server description="BatchInjection">
 
     <featureManager>
         <feature>batch-1.0</feature>
         <feature>cdi-1.2</feature>
         <feature>ejb-3.2</feature>
         <feature>componenttest-1.0</feature>
+        <!--  For Java 2 security -->
         <feature>jaxb-2.2</feature>
     </featureManager>
     

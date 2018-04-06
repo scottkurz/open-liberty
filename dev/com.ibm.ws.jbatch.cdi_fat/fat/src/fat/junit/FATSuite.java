@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package batch.fat;
+package fat.junit;
 
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -20,7 +20,8 @@ import componenttest.rules.repeater.RepeatTests;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-                SimpleBatchTest.class,
+                BatchInjectionTest.class,
+                TranTimeoutCleanupTest.class,
 })
 public class FATSuite {
     // Using the RepeatTests @ClassRule in FATSuite will cause all tests in the FAT to be run twice.

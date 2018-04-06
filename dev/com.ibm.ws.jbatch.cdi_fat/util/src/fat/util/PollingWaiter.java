@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package app.util;
+package fat.util;
 
 import java.util.HashSet;
 import java.util.Set;

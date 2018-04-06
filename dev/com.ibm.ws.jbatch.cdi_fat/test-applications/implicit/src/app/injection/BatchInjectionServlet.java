@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package app.web;
+package app.injection;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,15 +23,15 @@ import javax.servlet.annotation.WebServlet;
 
 import org.junit.Test;
 
-import app.util.Injectables.NonBatchArtifact;
-import app.util.PollingWaiter;
+import app.injection.Injectables.NonBatchArtifact;
 import componenttest.app.FATServlet;
 import componenttest.custom.junit.runner.Mode;
 import componenttest.custom.junit.runner.Mode.TestMode;
+import fat.util.PollingWaiter;
 
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = "/MyServlet")
-public class MyServlet extends FATServlet {
+@WebServlet(urlPatterns = "/BatchInjectionServlet")
+public class BatchInjectionServlet extends FATServlet {
 
     public static Logger logger = Logger.getLogger("test");
 
@@ -47,7 +47,7 @@ public class MyServlet extends FATServlet {
      *
      * To find logic validating injection,
      *
-     * @see app.util.Injectables
+     * @see app.injection.Injectables
      */
     @Test
     @Mode(TestMode.LITE)
