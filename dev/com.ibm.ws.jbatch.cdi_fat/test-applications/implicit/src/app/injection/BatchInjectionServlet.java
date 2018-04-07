@@ -54,7 +54,7 @@ public class BatchInjectionServlet extends FATServlet {
     public void testInjectionWithinBatchJob() throws Exception {
         logger.fine("Running test = testInjectionWithinBatchJob");
         JobOperator jo = BatchRuntime.getJobOperator();
-        long execId = jo.start("cdi", null);
+        long execId = jo.start("Injection", null);
         JobExecution jobExec = new PollingWaiter(execId, jo).awaitTermination();
         assertEquals("Job didn't complete successfully", BatchStatus.COMPLETED, jobExec.getBatchStatus());
     }

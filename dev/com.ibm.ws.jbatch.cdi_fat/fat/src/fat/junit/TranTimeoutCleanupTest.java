@@ -54,8 +54,13 @@ public class TranTimeoutCleanupTest extends FATServletClient {
     @BeforeClass
     public static void setUp() throws Exception {
         WebArchive implicit = ShrinkWrap.create(WebArchive.class, "implicit.war")//
-                        .addPackages(true, "app.timeout");
-        addBatchJob(implicit, ".xml");
+                        .addPackages(true, "app.timeout")
+                        .addPackages(true, "fat.util");
+
+        addBatchJob(implicit, "TranTimeoutCleanupAfter.xml");
+        addBatchJob(implicit, "TranTimeoutCleanupBefore.xml");
+        addBatchJob(implicit, "TranTimeoutCleanupBeforePartition.xml");
+        addBatchJob(implicit, "TranTimeoutCleanupBeforeSplitFlow.xml");
 
         // Write the WebArchive to 'publish/servers/<server>/apps' and print the contents
         ShrinkHelper.exportAppToServer(server1, implicit);

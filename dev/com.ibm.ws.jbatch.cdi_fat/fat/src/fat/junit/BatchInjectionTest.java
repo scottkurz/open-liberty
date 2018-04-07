@@ -54,9 +54,10 @@ public class BatchInjectionTest extends FATServletClient {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        WebArchive implicit = ShrinkWrap.create(WebArchive.class, "implicit.war")//
+        WebArchive implicit = ShrinkWrap.create(WebArchive.class, "implicit.war")
                         .addPackages(true, "app.injection")
                         .addPackages(true, "fat.util");
+
         addBatchJob(implicit, "Injection.xml");
 
         // Write the WebArchive to 'publish/servers/<server>/apps' and print the contents
