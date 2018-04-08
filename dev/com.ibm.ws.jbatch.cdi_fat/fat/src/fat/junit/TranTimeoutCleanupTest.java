@@ -14,6 +14,7 @@ import java.io.File;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
@@ -77,5 +78,10 @@ public class TranTimeoutCleanupTest extends FATServletClient {
         String resourceDir = "test-applications/implicit/resources/";
         String batchJobsDir = "classes/META-INF/batch-jobs/";
         implicit.addAsWebInfResource(new File(resourceDir + jslName), batchJobsDir + jslName);
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        server1.stopServer();
     }
 }

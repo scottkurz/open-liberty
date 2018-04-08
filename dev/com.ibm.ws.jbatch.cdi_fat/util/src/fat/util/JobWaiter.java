@@ -10,7 +10,6 @@
  *******************************************************************************/
 package fat.util;
 
-
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -108,7 +107,7 @@ public class JobWaiter {
             logger.finer("Job " + executionId + " successfully completed.");
             return jobExec;
         } else {
-            throw new RuntimeException("Job " + executionId + " finished with non-completed state: " + jobExec.getBatchStatus());
+            throw new IllegalStateException("Job " + executionId + " finished with non-completed state: " + jobExec.getBatchStatus());
         }
     }
 
