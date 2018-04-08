@@ -23,6 +23,7 @@ import fat.util.JobWaiter;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/TranTimeoutCleanupServlet")
+@Mode(TestMode.FULL)
 public class TranTimeoutCleanupServlet extends FATServlet {
 
     public static Logger logger = Logger.getLogger("test");
@@ -38,9 +39,8 @@ public class TranTimeoutCleanupServlet extends FATServlet {
      */
 
     @Test
-    @Mode(TestMode.LITE)
     public void testTranTimeoutCleanupJobs() throws Exception {
-        int numIterations = 4;
+        int numIterations = 14;
 
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
@@ -52,7 +52,6 @@ public class TranTimeoutCleanupServlet extends FATServlet {
     }
 
     @Test
-    @Mode(TestMode.FULL)
     public void testTranTimeoutCleanupPartitions() throws Exception {
         int numIterations = 3;
 
@@ -63,11 +62,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
             logger.info("Job 2, iteration #" + i);
             new JobWaiter().completeNewJob("TranTimeoutCleanupAfter", null);
         }
-
     }
 
     @Test
-    @Mode(TestMode.FULL)
     public void testTranTimeoutCleanupSplitFlows() throws Exception {
 
         int numIterations = 3;
