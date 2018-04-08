@@ -10,16 +10,16 @@
  *******************************************************************************/
 package fat.util;
 
+
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
-
-import com.sun.istack.internal.logging.Logger;
 
 /**
  * Utility to start a job with a static reference to a
