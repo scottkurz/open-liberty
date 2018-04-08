@@ -87,16 +87,19 @@ public class JobWaiter {
     private static long DFLT_TIMEOUT = 10000;
 
     /**
-     * Start a job, wait for finishing status like {@code BatchStatus.COMPLETED} or
-     * {@code BatchStatus.FAILED}, and throw RuntimeException if it doesn't complete
-     * with status of {@code BatchStatus.COMPLETED}
+     * Wait for {@code JobWaiter#timeout} seconds for BOTH of:
      *
-     * See {@link PollingWaiter}, which this uses and wraps.
+     * 1) BatchStatus to be one of: STOPPED ,FAILED , COMPLETED, ABANDONED
+     * AND
+     * 2) exitStatus to be non-null
+     *
+     * Returns JobExecution if it ends in <b>COMPLETED</b> status, otherwise throws
+     * <b>IllegalStateException</b>
      *
      * @param jobXMLName
      * @param jobParameters
      * @return JobExecution (for successfully completing job)
-     * @throws Exception
+     * @throws IllegalStateException
      */
     public JobExecution completeNewJob(String jobXMLName, Properties jobParameters) throws IllegalStateException {
         long executionId = jobOp.start(jobXMLName, jobParameters);
@@ -110,12 +113,13 @@ public class JobWaiter {
     }
 
     /**
-     * Wait for
+     * Wait for {@code JobWaiter#timeout} seconds for BOTH of:
+     *
      * 1) BatchStatus to be one of: STOPPED ,FAILED , COMPLETED, ABANDONED
      * AND
      * 2) exitStatus to be non-null
      *
-     * @return JobExceution
+     * @return JobExecution
      */
     public JobExecution waitForFinish(long executionId) {
         logger.fine("Entering waitForFinish for executionId = " + executionId);

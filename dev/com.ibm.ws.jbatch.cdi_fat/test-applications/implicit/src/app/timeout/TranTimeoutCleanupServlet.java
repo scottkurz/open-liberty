@@ -19,7 +19,7 @@ import org.junit.Test;
 import componenttest.app.FATServlet;
 import componenttest.custom.junit.runner.Mode;
 import componenttest.custom.junit.runner.Mode.TestMode;
-import fat.util.JobRunner;
+import fat.util.JobWaiter;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/TranTimeoutCleanupServlet")
@@ -45,9 +45,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
             logger.info("Job 1, iteration #" + i);
-            JobRunner.runJob("TranTimeoutCleanupBefore", null);
+            new JobWaiter().runNewJob("TranTimeoutCleanupBefore", null);
             logger.info("Job 2, iteration #" + i);
-            JobRunner.runJob("TranTimeoutCleanupAfter", null);
+            new JobWaiter().runNewJob("TranTimeoutCleanupAfter", null);
         }
     }
 
@@ -59,9 +59,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
             logger.info("Job 1, iteration #" + i);
-            JobRunner.runJob("TranTimeoutCleanupBeforePartition", null);
+            new JobWaiter().runNewJob("TranTimeoutCleanupBeforePartition", null);
             logger.info("Job 2, iteration #" + i);
-            JobRunner.runJob("TranTimeoutCleanupAfter", null);
+            new JobWaiter().runNewJob("TranTimeoutCleanupAfter", null);
         }
 
     }
@@ -75,9 +75,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
             logger.info("Job 1, iteration #" + i);
-            JobRunner.runJob("TranTimeoutCleanupBeforeSplitFlow", null);
+            new JobWaiter().runNewJob("TranTimeoutCleanupBeforeSplitFlow", null);
             logger.info("Job 2, iteration #" + i);
-            JobRunner.runJob("TranTimeoutCleanupAfter", null);
+            new JobWaiter().runNewJob("TranTimeoutCleanupAfter", null);
         }
     }
 
