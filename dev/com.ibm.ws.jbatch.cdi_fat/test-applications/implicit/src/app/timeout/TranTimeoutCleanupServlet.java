@@ -45,9 +45,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
             logger.info("Job 1, iteration #" + i);
-            new JobWaiter().runNewJob("TranTimeoutCleanupBefore", null);
+            new JobWaiter().completeNewJob("TranTimeoutCleanupBefore", null);
             logger.info("Job 2, iteration #" + i);
-            new JobWaiter().runNewJob("TranTimeoutCleanupAfter", null);
+            new JobWaiter().completeNewJob("TranTimeoutCleanupAfter", null);
         }
     }
 
@@ -59,9 +59,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
             logger.info("Job 1, iteration #" + i);
-            new JobWaiter().runNewJob("TranTimeoutCleanupBeforePartition", null);
+            new JobWaiter().completeNewJob("TranTimeoutCleanupBeforePartition", null);
             logger.info("Job 2, iteration #" + i);
-            new JobWaiter().runNewJob("TranTimeoutCleanupAfter", null);
+            new JobWaiter().completeNewJob("TranTimeoutCleanupAfter", null);
         }
 
     }
@@ -75,9 +75,9 @@ public class TranTimeoutCleanupServlet extends FATServlet {
         logger.fine("Running test = testTranTimeoutCleanupJobs");
         for (int i = 0; i < numIterations; i++) {
             logger.info("Job 1, iteration #" + i);
-            new JobWaiter().runNewJob("TranTimeoutCleanupBeforeSplitFlow", null);
+            new JobWaiter().completeNewJob("TranTimeoutCleanupBeforeSplitFlow", null);
             logger.info("Job 2, iteration #" + i);
-            new JobWaiter().runNewJob("TranTimeoutCleanupAfter", null);
+            new JobWaiter().completeNewJob("TranTimeoutCleanupAfter", null);
         }
     }
 
