@@ -316,7 +316,8 @@ public class JPAPersistenceManagerImpl extends AbstractPersistenceManager implem
      * Creates a PersistenceServiceUnit using the most recent entities.
      */
     private PersistenceServiceUnit createLatestPsu() throws Exception {
-        return createPsu(MAX_INSTANCE_VERSION, MAX_EXECUTION_VERSION, MAX_PARTITION_VERSION);
+        return createPsu(MAX_INSTANCE_VERSION, 2, 1);
+        // return createPsu(MAX_INSTANCE_VERSION, MAX_EXECUTION_VERSION, MAX_PARTITION_VERSION);
     }
 
     /**
@@ -332,16 +333,18 @@ public class JPAPersistenceManagerImpl extends AbstractPersistenceManager implem
         // Load the PSU including the most recent entities.
         PersistenceServiceUnit retMe = createLatestPsu();
         instanceVersion = MAX_INSTANCE_VERSION;
-        executionVersion = MAX_EXECUTION_VERSION;
-        partitionVersion = MAX_PARTITION_VERSION;
+        //executionVersion = MAX_EXECUTION_VERSION;
+        executionVersion = 2;
+        //partitionVersion = MAX_PARTITION_VERSION;
+        partitionVersion = 1;
 
         // If any tables are not up to the current code level, re-load the PSU with backleveled entities.
-        setPartitionTableVersion(retMe);
-        if (partitionVersion < 2) {
-            logger.fine("The REMOTABLEPARTITION table could not be found. The persistence service unit will exclude the remotable partition entity.");
-            retMe.close();
-            retMe = createPsu(instanceVersion, executionVersion, partitionVersion);
-        }
+//        setPartitionTableVersion(retMe);
+//        if (partitionVersion < 2) {
+//            logger.fine("The REMOTABLEPARTITION table could not be found. The persistence service unit will exclude the remotable partition entity.");
+//            retMe.close();
+//            retMe = createPsu(instanceVersion, executionVersion, partitionVersion);
+//        }
 
         setJobInstanceTableVersion(retMe);
         if (instanceVersion < 3) {
