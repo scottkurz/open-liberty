@@ -139,7 +139,6 @@ public abstract class AbstractPersistenceManager implements IPersistenceManagerS
         InstanceState instanceState = getJobInstance(jobInstanceId).getInstanceState();
 
         if (instanceState.equals(InstanceState.SUBMITTED)
-            || instanceState.equals(InstanceState.JMS_QUEUED)
             || instanceState.equals(InstanceState.JMS_CONSUMED)
             || instanceState.equals(InstanceState.DISPATCHED)) {
             return false;
@@ -226,8 +225,8 @@ public abstract class AbstractPersistenceManager implements IPersistenceManagerS
      * @param stepExecutionId
      * @return
      * @throws IllegalArgumentException if either:
-     *             1) we have no entry at all with id equal to <code>stepExecutionId</code>
-     *             2) we have a partition-level StepThreadExecutionEntity with this id (but not a top-level entry).
+     *                                      1) we have no entry at all with id equal to <code>stepExecutionId</code>
+     *                                      2) we have a partition-level StepThreadExecutionEntity with this id (but not a top-level entry).
      */
     @Override
     public TopLevelStepExecutionEntity getStepExecutionTopLevel(long stepExecutionId) throws IllegalArgumentException {
