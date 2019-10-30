@@ -26,7 +26,11 @@
 		</chunk>
 		<partition>
 			<mapper	ref="app.deserialize.SimplePartitionMapper" />
-			<collector ref="app.deserialize.DeserializePartitionCollector" />
+            <collector ref="app.deserialize.DeserializePartitionCollector">
+				<properties>
+					<property name="i" value="#{partitionPlan['startAtIndex']}" />
+				</properties>
+            </collector>
 			<analyzer ref="app.deserialize.DeserializePartitionAnalyzer">
 				<properties>
 					<property name="startAtIndex" value="#{partitionPlan['startAtIndex']}" />

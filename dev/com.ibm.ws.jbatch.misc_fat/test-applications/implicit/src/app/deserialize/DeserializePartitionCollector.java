@@ -3,6 +3,7 @@ package app.deserialize;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
+import javax.batch.api.BatchProperty;
 import javax.batch.api.partition.PartitionCollector;
 import javax.batch.runtime.context.StepContext;
 import javax.enterprise.context.Dependent;
@@ -22,6 +23,10 @@ public class DeserializePartitionCollector implements PartitionCollector {
     @Inject
     private StepContext stepCtx;
 
+    @Inject
+    @BatchProperty
+    private String i;
+
     @Override
     public Serializable collectPartitionData() throws Exception {
 
@@ -37,6 +42,8 @@ public class DeserializePartitionCollector implements PartitionCollector {
         logger.finer("[DEBUG] previousExitStatus " + previousExitStatus);
         logger.finer("[DEBUG] currentChunkExitStatus " + currentChunkExitStatus);
         logger.finer("[DEBUG] collectorData " + collectorData);
+
+        logger.finer("[DEBUG] i = " + i);
 
         return collectorData;
     }
