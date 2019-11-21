@@ -78,6 +78,7 @@ import com.ibm.jbatch.container.util.WSStepThreadExecutionAggregateImpl;
 import com.ibm.jbatch.container.validation.IdentifierValidator;
 import com.ibm.jbatch.container.ws.BatchLocationService;
 import com.ibm.jbatch.container.ws.InstanceState;
+import com.ibm.jbatch.container.ws.JobInstanceNotQueuedException;
 import com.ibm.jbatch.container.ws.WSPartitionStepAggregate;
 import com.ibm.jbatch.container.ws.WSPartitionStepThreadExecution;
 import com.ibm.jbatch.container.ws.WSRemotablePartitionState;
@@ -812,7 +813,7 @@ public class JPAPersistenceManagerImpl extends AbstractPersistenceManager implem
     }
 
     @Override
-    public JobInstanceEntity updateJobInstanceStateOnConsumed(final long jobInstanceId) {
+    public JobInstanceEntity updateJobInstanceStateOnConsumed(final long jobInstanceId) throws JobInstanceNotQueuedException {
         EntityManager em = getPsu().createEntityManager();
         String BASE_UPDATE = "UPDATE JobInstanceEntity x SET x.instanceState = com.ibm.jbatch.container.ws.InstanceState.JMS_CONSUMED";
         if (instanceVersion >= 2) {
@@ -836,12 +837,6 @@ public class JPAPersistenceManagerImpl extends AbstractPersistenceManager implem
                         throw new NoSuchJobInstanceException("No job instance found for id = " + jobInstanceId);
                     }
 
-                    try {
-                        verifyStateTransitionIsValid(instance, InstanceState.JMS_CONSUMED);
-                    } catch (BatchIllegalJobStatusTransitionException e) {
-                        throw new PersistenceException(e);
-                    }
-
                     Query jpaQuery = entityMgr.createQuery(FINAL_UPDATE);
                     jpaQuery.setParameter("instanceId", jobInstanceId);
                     if (instanceVersion >= 2)
@@ -854,6 +849,7 @@ public class JPAPersistenceManagerImpl extends AbstractPersistenceManager implem
                         entityMgr.refresh(instance);
                     } else {
                         logger.finer("No match on updateJobInstanceStateOnConsumed query for instance =  " + jobInstanceId);
+                        throw new JobInstanceNotQueuedException();
                     }
                     return instance;
                 }
