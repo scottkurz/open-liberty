@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 International Business Machines Corp.
+ * Copyright 2012, 2020 International Business Machines Corp.
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Licensed under the Apache License,
@@ -18,22 +18,17 @@ package com.ibm.jbatch.container.jsl.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.logging.Logger;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.SAXParser;
 import javax.xml.transform.stream.StreamSource;
 
-import com.ibm.jbatch.container.jsl.JSLValidationEventHandler;
+import org.xml.sax.InputSource;
+
 import com.ibm.jbatch.container.jsl.ModelResolver;
-import com.ibm.jbatch.container.jsl.ValidatorHelper;
 import com.ibm.jbatch.jsl.model.JSLJob;
+import com.ibm.ws.xml.ParserFactory;
 
 public class JobModelResolverImpl implements ModelResolver<JSLJob> {
 
@@ -53,57 +48,25 @@ public class JobModelResolverImpl implements ModelResolver<JSLJob> {
         Object result = null;
         JSLJob job = null;
         InputStream is = null;
-        JSLValidationEventHandler handler = new JSLValidationEventHandler();
 
+        JobModelHandler handler = new JobModelHandler();
         try {
             //Defect 178383: get the input stream from the source and ensure it is closed
             //in the finally block to release the xml from being locked
             is = source.getInputStream();
+            InputSource inputSource = is != null ? new InputSource(is) : new InputSource(source.getReader());
 
             logger.fine("JobModelResolver start unmarshal");
-            final ClassLoader currentClassLoader = AccessController.doPrivileged(
-                                                                                 new PrivilegedAction<ClassLoader>() {
-                                                                                     @Override
-                                                                                     public ClassLoader run() {
-                                                                                         return JSLJob.class.getClassLoader();
-                                                                                     }
-                                                                                 });
 
-            logger.fine("JobModelResolver classloader obtained.");
+            SAXParser parser = ParserFactory.newSAXParser(true, false);
 
-            JAXBContext ctx = null;
-            try {
-                ctx = AccessController.doPrivileged(
-                                                    new PrivilegedExceptionAction<JAXBContext>() {
-                                                        @Override
-                                                        public JAXBContext run() throws JAXBException {
-                                                            return JAXBContext.newInstance("com.ibm.jbatch.jsl.model", currentClassLoader);
-                                                        }
-                                                    });
-            } catch (PrivilegedActionException e) {
-                throw new IllegalArgumentException("Exception creating JAXBContext to unmarshal jobXML", e.getCause());
-            }
+            parser.parse(inputSource, handler);
+
+            result = handler.ivHandler.getResult();
 
             logger.fine("JobModelResolver JAXBContext obtained.");
 
-            final Unmarshaller u = ctx.createUnmarshaller();
-            u.setSchema(ValidatorHelper.getXJCLSchema());
-
-            u.setEventHandler(handler);
-
-            try {
-                result = AccessController.doPrivileged(
-                                                       new PrivilegedExceptionAction<Object>() {
-                                                           @Override
-                                                           public Object run() throws JAXBException {
-                                                               return u.unmarshal(source);
-                                                           }
-                                                       });
-            } catch (PrivilegedActionException e) {
-                throw new IllegalArgumentException("Exception unmarshalling jobXML", e.getCause());
-            }
-
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Exception unmarshalling jobXML", e);
         } finally {
             if (is != null) {
@@ -115,7 +78,7 @@ public class JobModelResolverImpl implements ModelResolver<JSLJob> {
             }
         }
 
-        if (handler.eventOccurred()) {
+        if (handler.validationHandler.eventOccurred()) {
             // Not sure we'd get here.
             throw new IllegalArgumentException("JSL invalid per schema");
         }
