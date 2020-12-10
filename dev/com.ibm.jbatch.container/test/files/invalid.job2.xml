@@ -16,9 +16,8 @@
   limitations under the License.
 -->
 <jsl:job id="job1" xmlns:jsl="https://jakarta.ee/xml/ns/jakartaee" version="2.0">
-    <!-- With elemFormDefault = "unqualified", <step> & <batchlet> 
-        should not be NS-qualified by the default ns above -->
-	<step id="step1">
-		<batchlet ref="step1Ref" />
-	</step>
+    <!-- Since elemFormDefault = "qualified", <step> & <batchlet> should be NS-qualified -->
+    <step id="step1">
+        <batchlet ref="step1Ref" />
+    </step>
 </jsl:job>
