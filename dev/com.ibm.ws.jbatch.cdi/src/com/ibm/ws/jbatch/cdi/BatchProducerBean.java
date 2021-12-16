@@ -25,12 +25,22 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
+import javax.batch.runtime.BatchRuntime;
+import javax.batch.operations.JobOperator;
+
 import com.ibm.jbatch.container.cdi.DependencyInjectionUtilityCdi;
 import com.ibm.jbatch.container.cdi.ProxyFactoryCdi;
 import com.ibm.jbatch.jsl.model.Property;
 
 public class BatchProducerBean {
 
+    @Produces
+    @Dependent
+    public JobOperator produceJobOperator(InjectionPoint injectionPoint) {
+        return BatchRuntime.getJobOperator();
+    }
+
+    
     @Produces
     @BatchProperty
     @Dependent
