@@ -16,6 +16,8 @@
  */
 package com.ibm.ws.jbatch.cdi;
 
+import java.util.logging.Logger;
+
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
@@ -33,12 +35,37 @@ import com.ibm.ws.cdi.extension.WebSphereCDIExtension;
                                                                                                                  "javax.batch.runtime.context.JobContext;" +
                                                                                                                  "javax.batch.runtime.context.StepContext",
                                                                                                                  "service.vendor=IBM" })
-
 public class BatchCDIInjectionExtension implements WebSphereCDIExtension, Extension {
+
+    private final static Logger logger = Logger.getLogger(BatchCDIInjectionExtension.class.getName());
 
     void beforeBeanDiscovery(@Observes BeforeBeanDiscovery bbd, BeanManager bm) {
         AnnotatedType<BatchProducerBean> at = bm.createAnnotatedType(BatchProducerBean.class);
         bbd.addAnnotatedType(at, CDIServiceUtils.getAnnotatedTypeIdentifier(at, this.getClass()));
+    }
+
+    private static Boolean foundJobOp = false;
+
+    public <A> void processBean(final @Observes ProcessBean<A> processBeanEvent) {
+        if (!foundJobOp) {
+            if (processBeanEvent.getBean().getTypes().contains(JobOperator.class)) {
+                if (processBeanEvent.getBean().getBeanClass().equals(JobOpProducerBean.class)) {
+                    logger.log(Level.FINE, "BatchCDIInjectionExtension.processBean() detecting our own JobOpProducerBean");
+                } else {
+                    logger.log(Level.FINE, "BatchCDIInjectionExtension.processBean() Found JobOperator of class: " + processBeanEvent.getBean().getBeanClass());
+                    foundJobOp = true;
+                }
+            }
+        }
+    }
+
+    public void afterBeanDiscovery(final @Observes AfterBeanDiscovery abd, BeanManager bm) {
+        if (foundJobOp) {
+          logger.log(Level.FINE, "Deferring to other detected JobOperator Bean");
+          return;
+        }
+        logger.log(Level.FINE, "Didn't find JobOperator Bean, registering JBatch one");
+        abd.addBean(new JobOpProducerBean(bm));
     }
 
 }

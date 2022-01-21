@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 International Business Machines Corp.
+ * Copyright 2013, 2022 International Business Machines Corp.
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Licensed under the Apache License,
@@ -36,12 +36,6 @@ import com.ibm.jbatch.container.cdi.ProxyFactoryCdi;
 import com.ibm.jbatch.jsl.model.Property;
 
 public class BatchProducerBean {
-
-    @Produces
-    @Dependent
-    public JobOperator produceJobOperator(InjectionPoint injectionPoint) {
-        return BatchRuntime.getJobOperator();
-    }
 
     @Produces
     @Dependent
