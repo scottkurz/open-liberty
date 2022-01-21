@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 International Business Machines Corp.
+ * Copyright 2013, 2022 International Business Machines Corp.
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Licensed under the Apache License,
@@ -16,26 +16,31 @@
  */
 package com.ibm.ws.jbatch.cdi;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.batch.operations.JobOperator;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
+import javax.enterprise.inject.spi.ProcessBean;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 
 import com.ibm.ws.cdi.CDIServiceUtils;
-import com.ibm.ws.cdi.extension.WebSphereCDIExtension;
+import io.openliberty.cdi.spi.CDIExtensionMetadata;
 
-@Component(service = WebSphereCDIExtension.class, configurationPolicy = ConfigurationPolicy.IGNORE, property = { "api.classes=" +
+@Component(service = CDIExtensionMetadata.class, configurationPolicy = ConfigurationPolicy.IGNORE, property = { "api.classes=" +
                                                                                                                  "javax.batch.api.BatchProperty;" +
+                                                                                                                 "javax.batch.operations.JobOperator;" +
                                                                                                                  "javax.batch.runtime.context.JobContext;" +
                                                                                                                  "javax.batch.runtime.context.StepContext",
                                                                                                                  "service.vendor=IBM" })
-public class BatchCDIInjectionExtension implements WebSphereCDIExtension, Extension {
+public class BatchCDIInjectionExtension implements Extension {
 
     private final static Logger logger = Logger.getLogger(BatchCDIInjectionExtension.class.getName());
 
