@@ -28,18 +28,8 @@ import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessBean;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
-
 import com.ibm.ws.cdi.CDIServiceUtils;
-import io.openliberty.cdi.spi.CDIExtensionMetadata;
 
-@Component(service = CDIExtensionMetadata.class, configurationPolicy = ConfigurationPolicy.IGNORE, property = { "api.classes=" +
-                                                                                                                 "javax.batch.api.BatchProperty;" +
-                                                                                                                 "javax.batch.operations.JobOperator;" +
-                                                                                                                 "javax.batch.runtime.context.JobContext;" +
-                                                                                                                 "javax.batch.runtime.context.StepContext",
-                                                                                                                 "service.vendor=IBM" })
 public class BatchCDIInjectionExtension implements Extension {
 
     private final static Logger logger = Logger.getLogger(BatchCDIInjectionExtension.class.getName());
