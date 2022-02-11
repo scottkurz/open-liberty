@@ -106,9 +106,4 @@ public class JobOpProducerBean implements Bean<JobOperator> {
         public boolean isAlternative() {
             return false;
         }
-
-        @Override
-        public boolean isNullable() {
-            return false;
-        }
 }
