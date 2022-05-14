@@ -39,7 +39,7 @@ public class BatchCDIInjectionExtension implements Extension {
         bbd.addAnnotatedType(at, CDIServiceUtils.getAnnotatedTypeIdentifier(at, this.getClass()));
     }
 
-    private static Boolean foundJobOp = false;
+    private Boolean foundJobOp = false;
 
     public <A> void processBean(final @Observes ProcessBean<A> processBeanEvent) {
         if (!foundJobOp) {
