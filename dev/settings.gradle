@@ -11,6 +11,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+/*SK*/
 pluginManagement {
   /**
    * Load properties before initializing in order to use credentials to configure repositories.
