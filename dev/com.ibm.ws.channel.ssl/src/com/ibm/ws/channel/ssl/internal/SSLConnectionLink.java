@@ -16,6 +16,7 @@ package com.ibm.ws.channel.ssl.internal;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.nio.ReadOnlyBufferException;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -1367,5 +1368,13 @@ public class SSLConnectionLink extends OutboundProtocolLink implements Connectio
      */
     protected ThirdPartyAlpnNegotiator getAlpnNegotiator() {
         return this.alpnNegotiator;
+    }
+
+    /**
+     * @return
+     */
+    public Socket getSocket() {
+        // TODO Auto-generated method stub
+        return deviceServiceContext.getReadInterface().getSocket();
     }
 }
