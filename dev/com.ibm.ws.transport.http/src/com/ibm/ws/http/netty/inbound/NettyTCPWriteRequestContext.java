@@ -10,6 +10,7 @@
 package com.ibm.ws.http.netty.inbound;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -349,5 +350,11 @@ public class NettyTCPWriteRequestContext implements TCPWriteRequestContext {
             callback.error(vc, null, new IOException(e));
         }
         return null; // Return null as the write operation is queued or forced to queue
+    }
+
+    @Override
+    public Socket getSocket() {
+        // TODO Auto-generated method stub
+        throw new IllegalStateException("getSocket() not implemented for class: " + this.getClass().getCanonicalName());
     }
 }
