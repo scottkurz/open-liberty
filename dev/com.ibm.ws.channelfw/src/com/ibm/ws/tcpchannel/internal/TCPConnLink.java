@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -36,12 +36,12 @@ import com.ibm.wsspi.tcpchannel.TCPWriteRequestContext;
 
 /**
  * TCP channel's connection link object.
- * 
+ *
  */
 public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, OutboundConnectionLink, TCPConnectionContext, FFDCSelfIntrospectable {
     private static final TraceComponent tc = Tr.register(TCPConnLink.class, TCPChannelMessageConstants.TCP_TRACE_NAME, TCPChannelMessageConstants.TCP_BUNDLE);
 
-    private TCPChannelConfiguration config;
+    private final TCPChannelConfiguration config;
     private TCPChannel tcpChannel = null;
     private int numReads = 0;
     private int numWrites = 0;
@@ -64,7 +64,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Constructor.
-     * 
+     *
      * @param vc
      * @param channel
      * @param cfg
@@ -93,6 +93,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
      * com.ibm.wsspi.channelfw.ConnectionReadyCallback#ready(com.ibm.wsspi.channelfw
      * .VirtualConnection)
      */
+    @Override
     public void ready(VirtualConnection inVC) {
         // This should not be called because the TCPConnLink is always
         // ready since it is the first in the chain.
@@ -104,13 +105,14 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.channelfw.ConnectionLink#getChannelAccessor()
      */
+    @Override
     public Object getChannelAccessor() {
         return this;
     }
 
     /**
      * Access the channel that owns this connection link.
-     * 
+     *
      * @return TCPChannel
      */
     public TCPChannel getTCPChannel() {
@@ -120,6 +122,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getReadInterface()
      */
+    @Override
     public TCPReadRequestContext getReadInterface() {
         return this.reader;
     }
@@ -127,6 +130,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getWriteInterface()
      */
+    @Override
     public TCPWriteRequestContext getWriteInterface() {
         return this.writer;
     }
@@ -143,6 +147,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
      * @see
      * com.ibm.wsspi.channelfw.OutboundConnectionLink#connect(java.lang.Object)
      */
+    @Override
     public void connect(Object context) throws Exception {
         if (TraceComponent.isAnyTracingEnabled() && tc.isEntryEnabled()) {
             Tr.entry(tc, "connect");
@@ -171,6 +176,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
      * com.ibm.wsspi.channelfw.OutboundConnectionLink#connectAsynch(java.lang.
      * Object)
      */
+    @Override
     public void connectAsynch(Object context) {
         if (TraceComponent.isAnyTracingEnabled() && tc.isEntryEnabled()) {
             Tr.entry(tc, "connectAsynch");
@@ -297,18 +303,20 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Query whether this connect is asynchronous or not.
-     * 
+     *
      * @return boolean
      */
+    @Override
     protected boolean isAsyncConnect() {
         return (null == this.syncObject);
     }
 
     /**
      * Query if an error has occurred.
-     * 
+     *
      * @return boolean
      */
+    @Override
     protected boolean isSyncError() {
         return (null != this.syncError);
     }
@@ -317,6 +325,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
         this.callCompleteLocal = newValue;
     }
 
+    @Override
     protected void connectFailed(IOException e) {
         if (TraceComponent.isAnyTracingEnabled() && tc.isEntryEnabled()) {
             Tr.entry(tc, "connectFailed");
@@ -346,7 +355,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Returns the SocketIOChannel associated with this request
-     * 
+     *
      * @return SocketIOChannel
      */
     public SocketIOChannel getSocketIOChannel() {
@@ -355,7 +364,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Access the channel configuration for this connection link.
-     * 
+     *
      * @return TCPChannelConfiguration
      */
     public TCPChannelConfiguration getConfig() {
@@ -365,6 +374,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getRemoteAddress()
      */
+    @Override
     public InetAddress getRemoteAddress() {
         return this.socketIOChannel.getSocket().getInetAddress();
     }
@@ -372,6 +382,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getRemotePort()
      */
+    @Override
     public int getRemotePort() {
         return this.socketIOChannel.getSocket().getPort();
     }
@@ -379,6 +390,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getLocalAddress()
      */
+    @Override
     public InetAddress getLocalAddress() {
         return this.socketIOChannel.getSocket().getLocalAddress();
     }
@@ -386,6 +398,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getLocalPort()
      */
+    @Override
     public int getLocalPort() {
         return this.socketIOChannel.getSocket().getLocalPort();
     }
@@ -393,6 +406,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.wsspi.tcpchannel.TCPConnectionContext#getSSLContext()
      */
+    @Override
     public SSLConnectionContext getSSLContext() {
         // This TCPConnectionContext does not support SSL so return null.
         return null;
@@ -400,7 +414,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Query the number of reads performed on this connection.
-     * 
+     *
      * @return int
      */
     protected int getNumReads() {
@@ -409,7 +423,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Query the number of writes performed on this connection.
-     * 
+     *
      * @return int
      */
     protected int getNumWrites() {
@@ -435,6 +449,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
      * com.ibm.wsspi.channelfw.base.OutboundConnectorLink#close(com.ibm.wsspi.
      * channelfw.VirtualConnection, java.lang.Exception)
      */
+    @Override
     public void close(VirtualConnection inVC, Exception e) {
         if (TraceComponent.isAnyTracingEnabled() && tc.isEntryEnabled()) {
             Tr.entry(tc, "close(), " + this);
@@ -474,7 +489,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Query whether this connection link is closed or not.
-     * 
+     *
      * @return boolean
      */
     public boolean isClosed() {
@@ -486,6 +501,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
      * com.ibm.wsspi.channelfw.base.OutboundConnectorLink#destroy(java.lang.Exception
      * )
      */
+    @Override
     public void destroy(Exception e) {
         if (TraceComponent.isAnyTracingEnabled() && tc.isEntryEnabled()) {
             if (e == null) {
@@ -520,7 +536,7 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
 
     /**
      * Introspect this object for FFDC output.
-     * 
+     *
      * @return List<String>
      */
     public List<String> introspect() {
@@ -541,9 +557,18 @@ public class TCPConnLink extends TCPProxyConnLink implements ConnectionLink, Out
     /*
      * @see com.ibm.ws.ffdc.FFDCSelfIntrospectable#introspectSelf()
      */
+    @Override
     public String[] introspectSelf() {
         List<String> rc = introspect();
         return rc.toArray(new String[rc.size()]);
+    }
+
+    /**
+     * @return Socket
+     */
+    public Socket getSocket() {
+        SocketIOChannel channel = getSocketIOChannel();
+        return channel.getSocket();
     }
 
 }

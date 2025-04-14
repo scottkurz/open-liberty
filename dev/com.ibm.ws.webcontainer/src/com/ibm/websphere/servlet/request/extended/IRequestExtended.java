@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.ibm.websphere.servlet.request.extended;
 
+import java.net.Socket;
+
 import com.ibm.websphere.servlet.request.IRequest;
 import com.ibm.ws.util.ThreadPool;
 import com.ibm.wsspi.http.HttpInboundConnection;
@@ -25,4 +27,6 @@ public interface IRequestExtended extends IRequest {
     public ThreadPool getThreadPool();
     
     public HttpInboundConnection getHttpInboundConnection();
+    
+    public Socket getRequestSocket();
 }

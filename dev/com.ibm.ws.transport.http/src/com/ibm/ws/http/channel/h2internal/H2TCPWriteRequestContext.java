@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -13,6 +13,7 @@
 package com.ibm.ws.http.channel.h2internal;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 
 import com.ibm.websphere.ras.Tr;
@@ -242,4 +243,9 @@ public class H2TCPWriteRequestContext implements TCPWriteRequestContext {
 //
 //    }
 
+    @Override
+    public Socket getSocket() {
+        // TODO Auto-generated method stub
+        throw new IllegalStateException("getSocket() not implemented for class: " + this.getClass().getCanonicalName());
+    }
 }
