@@ -13,6 +13,7 @@
 package com.ibm.ws.tcpchannel.internal;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
@@ -569,6 +570,12 @@ public class TCPBaseRequestContext implements TCPRequestContext, FFDCSelfIntrosp
             rc = false;
         }
         return rc;
+    }
+
+    @Override
+    public Socket getSocket() {
+        TCPConnLink connLink = getTCPConnLink();
+        return connLink.getSocketIOChannel().getSocket();
     }
 
 }

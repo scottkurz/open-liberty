@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.ibm.wsspi.tcpchannel;
 
+import java.net.Socket;
+
 import com.ibm.wsspi.bytebuffer.WsByteBuffer;
 
 /**
@@ -71,6 +73,13 @@ public interface TCPRequestContext {
      * @param buf
      */
     void setBuffer(WsByteBuffer buf);
+
+    /**
+     * Returns a java.net.Socket associated with the request
+     *
+     * @return Socket
+     */
+    Socket getSocket();
 
     /**
      * A special value for the timeout parm used on the request calls.

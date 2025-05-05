@@ -15,6 +15,7 @@ import jain.protocol.ip.sip.message.Request;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -1681,4 +1682,13 @@ public class SipMessage implements IRequestExtended, IResponse, Queueable
 	public HttpInboundConnection getHttpInboundConnection() {
 		return null;
 	}
+
+	/**
+	 * @return null
+	 */
+	@Override
+	public Socket getRequestSocket() {
+		return null;
+	}
+
 }

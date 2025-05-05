@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -13,6 +13,7 @@
 package com.ibm.ws.channel.ssl.internal;
 
 import java.io.IOException;
+import java.net.Socket;
 
 import javax.net.ssl.SSLEngineResult;
 import javax.net.ssl.SSLEngineResult.HandshakeStatus;
@@ -1994,5 +1995,11 @@ public class SSLReadServiceContext extends SSLBaseServiceContext implements TCPR
                 userCallback.complete(vc, tcpReadRequestContext);
             }
         }
+    }
+
+    @Override
+    public Socket getSocket() {
+        // Delegate
+        return getConnLink().getDeviceReadInterface().getSocket();
     }
 }
