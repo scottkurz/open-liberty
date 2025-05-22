@@ -14,30 +14,36 @@ package http2.test.war.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Socket;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.PushBuilder;
 
-@WebServlet("/SimplePushServlet")
-public class SimplePushServlet extends HttpServlet {
+import com.ibm.websphere.servlet.request.IRequest;
+import com.ibm.websphere.servlet.request.extended.IRequestExtended;
+import com.ibm.wsspi.webcontainer.servlet.IExtendedRequest;
+
+@WebServlet("/GetRequestSocketServlet")
+public class GetRequestSocketServlet extends HttpServlet {
     static final long serialVersionUID = 9999L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter pw = resp.getWriter();
-        PushBuilder pushBuilder = req.newPushBuilder();
 
-        // push a file, push.txt, that contains a small amount of text.
-        // the test will validate that the correct text is sent by the server.
-        if (pushBuilder != null) {
-            pushBuilder.path("files/push.txt").push();
-        }
+        IExtendedRequest extRequest = (IExtendedRequest) req;
+        IRequest iRequest = extRequest.getIRequest();
+        IRequestExtended iRequestExt = (IRequestExtended) iRequest;
+        Socket socket = iRequestExt.getRequestSocket();
+        System.out.println("SKSK: " + socket.getLocalAddress());
+        System.out.println("SKSK: " + socket.getLocalPort());
+
+        PrintWriter pw = resp.getWriter();
+
         pw.print("<!DOCTYPE html><html><body>");
-        pw.println("This is a simple push servlet");
+        pw.println("SKSK addr =" + socket.getLocalAddress() + ", port =" + socket.getLocalPort());
         pw.print("</body></html>");
     }
 }

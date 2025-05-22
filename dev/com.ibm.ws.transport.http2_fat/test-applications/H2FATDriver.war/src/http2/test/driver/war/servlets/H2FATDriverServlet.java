@@ -272,6 +272,23 @@ public class H2FATDriverServlet extends FATServlet {
         handleErrors(h2Client, testName);
     }
 
+    public void testSKSK1(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, Exception {
+        CountDownLatch blockUntilConnectionIsDone = new CountDownLatch(1);
+        String testName = "testSKSK1";
+        Http2Client h2Client = new Http2Client(request.getParameter("hostName"), Integer.parseInt(request.getParameter("port")), blockUntilConnectionIsDone, 60000);
+        blockUntilConnectionIsDone.await();
+        handleErrors(h2Client, testName);
+    }
+
+    public void testSKSK2(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, Exception {
+        CountDownLatch blockUntilConnectionIsDone = new CountDownLatch(1);
+        String testName = "testSKSK2";
+        Http2Client h2Client = new Http2Client(request.getParameter("hostName"), Integer.parseInt(request.getParameter("port")), blockUntilConnectionIsDone, 60000);
+        setupDefaultUpgradedConnection(h2Client, "/H2TestModule/GetRequestSocketServlet");
+        blockUntilConnectionIsDone.await();
+        handleErrors(h2Client, testName);
+    }
+
     public void testHeaderAndDataPost(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, Exception {
         CountDownLatch blockUntilConnectionIsDone = new CountDownLatch(1);
         String testName = "testHeaderAndDataPost";
@@ -4822,6 +4839,32 @@ public class H2FATDriverServlet extends FATServlet {
         blockUntilConnectionIsDone.await(10000, TimeUnit.MILLISECONDS);
         handleErrors(h2Client, testName);
 
+    }
+
+    public void testGetRequestSocket(HttpServletRequest request,
+                                     HttpServletResponse response) throws InterruptedException, Exception {
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.logp(Level.INFO, this.getClass().getName(), "testGetRequestSocket", "Started!");
+            LOGGER.logp(Level.INFO, this.getClass().getName(), "testGetRequestSocket",
+                        "Connecting to = " + request.getParameter("hostName") + ":" + request.getParameter("port"));
+        }
+        String testName = "testGetRequestSocket";
+        CountDownLatch blockUntilConnectionIsDone = new CountDownLatch(1);
+        Http2Client h2Client = getDefaultH2Client(request, response, blockUntilConnectionIsDone);
+
+        addSecondExpectedHeaders(h2Client);
+        setupDefaultUpgradedConnection(h2Client, HEADERS_ONLY_URI);
+
+        List<HeaderEntry> firstHeadersToSend = new ArrayList<HeaderEntry>();
+        firstHeadersToSend.add(new HeaderEntry(new H2HeaderField(":method", "GET"), HpackConstants.LiteralIndexType.NEVERINDEX, false));
+        firstHeadersToSend.add(new HeaderEntry(new H2HeaderField(":scheme", "http"), HpackConstants.LiteralIndexType.NEVERINDEX, false));
+        firstHeadersToSend.add(new HeaderEntry(new H2HeaderField(":path", "/H2TestModule/GetRequestSocketServlet"), HpackConstants.LiteralIndexType.NEVERINDEX, false));
+        FrameHeadersClient frameHeadersToSend = new FrameHeadersClient(3, null, 0, 0, 0, true, true, false, false, false, false);
+        frameHeadersToSend.setHeaderEntries(firstHeadersToSend);
+        h2Client.sendFrame(frameHeadersToSend);
+
+        blockUntilConnectionIsDone.await();
+        handleErrors(h2Client, testName);
     }
 
     void handleErrors(Http2Client client, String testName) {

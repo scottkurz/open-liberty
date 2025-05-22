@@ -1865,4 +1865,10 @@ public class Http2FullModeTests extends FATServletClient {
     public void testMaxStreamsRefused() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
+
+    @Test
+    public void testGetRequestSocket() throws Exception {
+        runTest(defaultServletPath, testName.getMethodName());
+    }
+
 }

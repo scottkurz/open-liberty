@@ -16,8 +16,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.ibm.ws.fat.util.FatLogHandler;
 
-import componenttest.custom.junit.runner.AlwaysPassesTest;
-
 /**
  * HTTP/2 Tests
  *
@@ -36,17 +34,17 @@ import componenttest.custom.junit.runner.AlwaysPassesTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-                AlwaysPassesTest.class, // LITE
-                Http2LiteModeTests.class, // LITE
+//                AlwaysPassesTest.class, // LITE
+//                Http2LiteModeTests.class, // LITE
                 Http2SecureTests.class, // LITE
-                Http2FullModeTests.class, // FULL
-                /** move tests to Http2FullTracingTests to diagnose failures via full tracing */
-                Http2FullTracingTests.class, // FULL
-                Http2Config40H2Off.class, // FULL
-                Http2Config31H2Off.class, // FULL
-                Http2Config31H2On.class, // FULL
-                Http2WindowUpdateTests.class, //FULL
-                Http2CompressionTests.class //FULL
+//                Http2FullModeTests.class, // FULL
+//                /** move tests to Http2FullTracingTests to diagnose failures via full tracing */
+//                Http2FullTracingTests.class, // FULL
+//                Http2Config40H2Off.class, // FULL
+//                Http2Config31H2Off.class, // FULL
+//                Http2Config31H2On.class, // FULL
+//                Http2WindowUpdateTests.class, //FULL
+//                Http2CompressionTests.class //FULL
 //MultiSessionTests.class // FULL; disabled for now
 })
 

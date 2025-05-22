@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -28,7 +28,6 @@ import org.junit.runner.RunWith;
 
 import com.ibm.ws.http2.client.SecureHttp2Client;
 
-import componenttest.annotation.MinimumJavaLevel;
 import componenttest.custom.junit.runner.FATRunner;
 import componenttest.custom.junit.runner.Mode;
 import componenttest.custom.junit.runner.Mode.TestMode;
@@ -56,6 +55,7 @@ public class Http2SecureTests extends FATServletClient {
             LOGGER.logp(Level.INFO, CLASS_NAME, "before()", "Starting servers...");
         }
         H2FATApplicationHelper.addWarToServerDropins(server, "H2TestModule.war", true, "http2.test.war.servlets");
+        server.installSystemFeature("webcontainerlibertyinternals");
         server.startServer(Http2SecureTests.class.getSimpleName() + ".log");
         assertNotNull("CWWKO0219I.*ssl not received", server.waitForStringInLog("CWWKO0219I.*ssl"));
         client = new SecureHttp2Client();
@@ -122,6 +122,22 @@ public class Http2SecureTests extends FATServletClient {
         String body = "ABC123";
         List<String> results = client.makeSecureRequests(server.getHostname(), port, requestUris, 0);
         Assert.assertTrue("secure request was not successful!", results.contains(body));
+    }
+
+    @Test
+    public void testSKSKSecure() throws Exception {
+
+        server.saveServerConfiguration();
+        server.setServerConfigurationFile("useWebContainerInternalsSecure.xml");
+
+        String[] requestUris = new String[] { "/H2TestModule/GetRequestSocketServlet" };
+        int port = server.getHttpSecondarySecurePort();
+        String body = "SKSK";
+        List<String> results = client.makeSecureRequests(server.getHostname(), port, requestUris, 0);
+        Assert.assertTrue("secure request was not successful!", results.contains(body));
+
+        //TODO - needs to handle failure
+        server.restoreServerConfiguration();
     }
 
     /**

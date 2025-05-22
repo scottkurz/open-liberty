@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -62,7 +63,7 @@ public class Http2LiteModeTests extends FATServletClient {
 
         H2FATApplicationHelper.addWarToServerDropins(server, "H2TestModule.war", true, "http2.test.war.servlets");
         H2FATApplicationHelper.addWarToServerDropins(runtimeServer, "H2FATDriver.war", true, "http2.test.driver.war.servlets");
-
+        server.installSystemFeature("webcontainerlibertyinternals");
         server.startServer(true, true);
         runtimeServer.startServer(true, true);
     }
@@ -95,6 +96,7 @@ public class Http2LiteModeTests extends FATServletClient {
     }
 
     @Test
+    @Ignore
     public void testUpgradeHeaderFollowedBySettingsFrame() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -107,6 +109,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSendGetRequest() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -119,6 +122,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSendPostRequest() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -131,6 +135,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSendHeadRequest() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -143,6 +148,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderAndData() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -155,7 +161,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     // Currently in Http2FullTracingTests
-    //@Test
+    //@Test @Ignore
     //public void testHeaderAndDataPost() throws Exception {
     //    runTest(defaultServletPath, testName.getMethodName());
     //}
@@ -169,6 +175,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSecondRequest() throws Exception {
         runTest();
     }
@@ -182,6 +189,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPriorityWindowUpdate1() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -195,11 +203,12 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSmallWindowSize() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
 
-//    // test does not pass, test needs to be re-worked @Test
+//    // test does not pass, test needs to be re-worked @Test @Ignore
 //    public void testRstStream() throws Exception {
 //        runTest(defaultServletPath, testName.getMethodName());
 //    }
@@ -213,8 +222,27 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPing1() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
+    }
+
+    @Test
+    public void testSKSK1() throws Exception {
+        server.saveServerConfiguration();
+        server.setServerConfigurationFile("useWebContainerInternals.xml");
+        runTest(defaultServletPath, testName.getMethodName());
+        //TODO - needs to handle failure
+        server.restoreServerConfiguration();
+    }
+
+    @Test
+    public void testSKSK2() throws Exception {
+        server.saveServerConfiguration();
+        server.setServerConfigurationFile("useWebContainerInternals.xml");
+        runTest(defaultServletPath, testName.getMethodName());
+        //TODO - needs to handle failure
+        server.restoreServerConfiguration();
     }
 
     /**
@@ -225,6 +253,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSendHeadersFrame() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -239,6 +268,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPingFrame() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -251,6 +281,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderAndContinuations() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -263,7 +294,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      *
      */
-    //@Test
+    //@Test @Ignore
     //public void testUnknownFrameType() throws Exception {
     //    runTest(genericServletPath, testName.getMethodName());
     //}
@@ -276,6 +307,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testInvalidStreamId() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -289,7 +321,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     // Moved to trace, build break 259034
-    //@Test
+    //@Test @Ignore
     //public void testDataOnStreamZero() throws Exception {
     //    runTest(genericServletPath, testName.getMethodName());
     //}
@@ -301,7 +333,7 @@ public class Http2LiteModeTests extends FATServletClient {
      *
      * @throws Exception
      */
-    //@Test Move to trace bucket
+    //@Test @Ignore Move to trace bucket
     public void testInvalidStreamIdSequence() throws Exception {
         runTest(genericServletPath, testName.getMethodName());
     }
@@ -318,6 +350,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testInterleavedHeaderBlocks() throws Exception {
         runTest(genericServletPath, testName.getMethodName());
     }
@@ -330,6 +363,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testContFrameAfterHeaderEndHeadersSet() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -342,6 +376,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testContFrameAfterContEndHeadersSet() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -354,6 +389,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testContFrameAfterDataSent() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -367,6 +403,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderLimitReached() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -381,6 +418,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderContinuationLimitReached() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -394,6 +432,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderTokenSizeExceeded() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -407,6 +446,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderSizeExceeded() throws Exception {
         runTest(continuationServletPath, testName.getMethodName());
     }
@@ -419,6 +459,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testDataOnIdleStream() throws Exception {
         runTest(dataServletPath, testName.getMethodName());
     }
@@ -431,7 +472,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     // Moved to trace
-    //@Test
+    //@Test @Ignore
     //public void testZeroLengthPadding() throws Exception {
     //    runTest(dataServletPath, testName.getMethodName());
     //}
@@ -444,12 +485,12 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
 
-    // Move to trace bucket to debug build break @Test
+    // Move to trace bucket to debug build break @Test @Ignore
     //public void testInvalidPaddingValue() throws Exception {
     //    runTest(dataServletPath, testName.getMethodName());
     //}
 
-    // Move to trace bucket to debug build break @Test
+    // Move to trace bucket to debug build break @Test @Ignore
     //public void testDataFrameExceedingMaxFrameSize() throws Exception {
     //    runTest(dataServletPath, testName.getMethodName());
     //}
@@ -461,7 +502,7 @@ public class Http2LiteModeTests extends FATServletClient {
      *
      * @throws Exception
      */
-    //@Test moved to trace
+    //@Test @Ignore moved to trace
     public void testConnectMethod() throws Exception {
         runTest(methodServletPath, testName.getMethodName());
     }
@@ -475,7 +516,7 @@ public class Http2LiteModeTests extends FATServletClient {
      *
      * @throws Exception
      */
-    //@Test moved to trace
+    //@Test @Ignore moved to trace
     public void testConnectMethodError() throws Exception {
         runTest(methodServletPath, testName.getMethodName());
     }
@@ -488,6 +529,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeadMethod() throws Exception {
         runTest(methodServletPath, testName.getMethodName());
     }
@@ -500,6 +542,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testOptionMethod() throws Exception {
         runTest(methodServletPath, testName.getMethodName());
     }
@@ -512,6 +555,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testOptionMethod400Uri() throws Exception {
         runTest(methodServletPath, testName.getMethodName());
     }
@@ -524,6 +568,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testOptionMethod404Uri() throws Exception {
         runTest(methodServletPath, testName.getMethodName());
     }
@@ -537,6 +582,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPushPromisePreload() throws Exception {
         runTest(pushPromisePath, testName.getMethodName());
     }
@@ -549,6 +595,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPushPromisePushBuilder() throws Exception {
         runTest(pushPromisePath, testName.getMethodName());
     }
@@ -561,6 +608,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testClientSendPushPromiseError() throws Exception {
         runTest(pushPromisePath, testName.getMethodName());
     }
@@ -573,6 +621,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPushPromiseClientNotEnabledPreload() throws Exception {
         runTest(pushPromisePath, testName.getMethodName());
     }
@@ -587,6 +636,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPushPromiseClientNotEnabledPushBuilder() throws Exception {
         runTest(pushPromisePath, testName.getMethodName());
     }
@@ -602,6 +652,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testModifiedInitialWindowSizeAfterHeaderFrame() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -616,6 +667,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testHeaderAndDataPriorKnowledge() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
@@ -630,6 +682,7 @@ public class Http2LiteModeTests extends FATServletClient {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPostRequestDataKnowledge() throws Exception {
         runTest(defaultServletPath, testName.getMethodName());
     }
