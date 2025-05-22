@@ -72,15 +72,8 @@ public class Utils {
      */
     public static String get(LibertyServer server,
                              String reqURI, String resExpectedStatusCode, String resExpectedText, String resNotExpectedText) throws Exception {
-        return get(server, false, reqURI, resExpectedStatusCode, resExpectedText, resNotExpectedText);
-    }
 
-    public static String get(LibertyServer server, boolean securePort,
-                             String reqURI, String resExpectedStatusCode, String resExpectedText, String resNotExpectedText) throws Exception {
-
-        int serverPort = securePort ? server.getHttpDefaultSecurePort() : server.getHttpDefaultPort();
-
-        String url = "http://" + server.getHostname() + ":" + serverPort + reqURI;
+        String url = "http://" + server.getHostname() + ":" + server.getHttpDefaultPort() + reqURI;
         debug("Expecting response text [" + resExpectedText + "]");
         debug("Expecting NO response text [" + resNotExpectedText + "]");
         debug("Expecting status code [" + resExpectedStatusCode + "]");
@@ -112,12 +105,21 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Do a simple https get to a server uri with trace
+     *
+     * @param server                target server
+     * @param reqURI                'ContextRoot/path'
+     * @param resExpectedStatusCode
+     * @param resExpectedText
+     * @param resNotExpectedText    will fail if this is in what is returned
+     * @return the response text
+     * @throws Exception
+     */
     public static String getSecure(LibertyServer server,
                                    String reqURI, String resExpectedStatusCode, String resExpectedText, String resNotExpectedText) throws Exception {
 
-        int serverPort = server.getHttpDefaultSecurePort();
-
-        String url = "https://" + server.getHostname() + ":" + serverPort + reqURI;
+        String url = "https://" + server.getHostname() + ":" + server.getHttpDefaultSecurePort() + reqURI;
         debug("Expecting response text [" + resExpectedText + "]");
         debug("Expecting NO response text [" + resNotExpectedText + "]");
         debug("Expecting status code [" + resExpectedStatusCode + "]");

@@ -37,13 +37,11 @@ public class RequestSocket extends HttpServlet {
         IRequest iRequest = extRequest.getIRequest();
         IRequestExtended iRequestExt = (IRequestExtended) iRequest;
         Socket socket = iRequestExt.getRequestSocket();
-        System.out.println("SKSK: " + socket.getLocalAddress());
-        System.out.println("SKSK: " + socket.getLocalPort());
 
         PrintWriter writer = response.getWriter();
-        writer.println("SKRS: Backend called from " +
-                       "Address: " + socket.getLocalAddress() +
-                       " Port:" + socket.getLocalPort());
+        writer.println("RequestSocket called from " +
+                       "socket LocalPort: " + socket.getLocalPort() +
+                       ", socket Port: " + socket.getPort());
         writer.flush();
         writer.close();
     }

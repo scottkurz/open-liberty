@@ -87,15 +87,15 @@ public class RequestSocketTest extends FATServletClient {
 
     @Test
     public void testRequestSocket() throws Exception {
-        String expectedPrefix = "SKRS: Backend called from Address:";
-        String info = Utils.get(server, "/" + APP_NAME + "/RequestSocket", "", expectedPrefix, "");
+        String expected = "socket LocalPort: " + server.getHttpDefaultPort();
+        String info = Utils.get(server, "/" + APP_NAME + "/RequestSocket", "", expected, "");
         Assert.assertTrue("Bad response = " + info, info.startsWith("SKRS: "));
     }
 
     @Test
     public void testRequestSocketSecure() throws Exception {
-        String expectedPrefix = "SKRS: Backend called from Address:";
-        String info = Utils.getSecure(server, "/" + APP_NAME + "/RequestSocket", "", expectedPrefix, "");
+        String expected = "socket LocalPort: " + server.getHttpDefaultSecurePort();
+        String info = Utils.getSecure(server, "/" + APP_NAME + "/RequestSocket", "", expected, "");
         Assert.assertTrue("Bad response = " + info, info.startsWith("SKRS: "));
     }
 
