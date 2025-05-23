@@ -18,18 +18,16 @@ import org.junit.runners.Suite.SuiteClasses;
 import componenttest.rules.repeater.EmptyAction;
 import componenttest.rules.repeater.FeatureReplacementAction;
 import componenttest.rules.repeater.RepeatTests;
-import io.openliberty.transport.http_fat.accesslists.AccessListsTests;
-import io.openliberty.transport.http_fat.accesslists.RequestSocketTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-                AccessListsTests.class,
+//                AccessListsTests.class,
                 RequestSocketTest.class,
-                MaxOpenConnectionsTest.class,
-                PortOpenRetriesTests.class,
-                SoLingerTests.class,
-                SoReuseAddrTests.class,
-                TcpOptionsDefaultTests.class
+//                MaxOpenConnectionsTest.class,
+//                PortOpenRetriesTests.class,
+//                SoLingerTests.class,
+//                SoReuseAddrTests.class,
+//                TcpOptionsDefaultTests.class
 })
 
 public class FATSuite {

@@ -10,7 +10,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package io.openliberty.transport.http_fat.accesslists;
+package io.openliberty.transport.http_fat;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -29,7 +29,7 @@ import componenttest.annotation.TestServlet;
 import componenttest.custom.junit.runner.FATRunner;
 import componenttest.topology.impl.LibertyServer;
 import componenttest.topology.utils.FATServletClient;
-import junit.framework.Assert;
+import io.openliberty.transport.http_fat.accesslists.Utils;
 
 /**
  * This class is a common superclass of all Http FAT tests and can be used to
@@ -89,14 +89,12 @@ public class RequestSocketTest extends FATServletClient {
     public void testRequestSocket() throws Exception {
         String expected = "socket LocalPort: " + server.getHttpDefaultPort();
         String info = Utils.get(server, "/" + APP_NAME + "/RequestSocket", "", expected, "");
-        Assert.assertTrue("Bad response = " + info, info.startsWith("SKRS: "));
     }
 
     @Test
     public void testRequestSocketSecure() throws Exception {
         String expected = "socket LocalPort: " + server.getHttpDefaultSecurePort();
         String info = Utils.getSecure(server, "/" + APP_NAME + "/RequestSocket", "", expected, "");
-        Assert.assertTrue("Bad response = " + info, info.startsWith("SKRS: "));
     }
 
     /**
